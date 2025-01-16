@@ -40,8 +40,13 @@ export interface RangedFilter{
 }
 
 export interface FilteringQueryV2 {
+  completed?: boolean | null;
+  userId?: string;
+  status?: string;
+  task?: string;
   page?: number;
   rows?: number;
+  limit?: number;
   cursor?: string;
   orderKey?: string;
   orderRule?: string;

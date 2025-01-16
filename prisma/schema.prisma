@@ -11,3 +11,54 @@ datasource db {
 }
 
 // Declare schemas here
+enum Roles {
+  ADMIN
+  USER
+}
+
+enum Status {
+  PENDING
+  SUCCESS
+  FAILED
+  IN_PROGRESS
+}
+
+model User {
+  id          String    @id @default(uuid())
+  firstName   String?
+  lastName    String?
+  phoneNumber String?   
+  email       String   @unique
+  password    String?
+  country     String?
+  about       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime?
+  isActive    Boolean  @default(true)
+  role        Roles   @default(USER)
+  todos       Todo[]
+  files       File[]
+}
+
+model Todo {
+  id          String   @id @default(uuid())
+  userId      String
+  task        String
+  isCompleted Boolean  @default(false)
+  isDeleted    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime?
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model File {
+  id          String    @id @default(uuid())
+  userId      String
+  status      Status   @default(IN_PROGRESS)
+  fileName    String
+  filePath    String
+  fileType    String?
+  fileSize    Int?
+  uploadedAt  DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+}
